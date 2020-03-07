@@ -23,7 +23,7 @@ class Loan
 		$month = $data["month"];
 		$date = $year."-".$month."-";
 
-		$sql = "SELECT 
+		$sql = "SELECT
 					T1.member_id,
 				    T2.name,
 				    T2.mobile,
@@ -61,7 +61,7 @@ class Loan
 
 		#checking Book No
 		if ($BookNO == "") {
-			$msg =  array( 
+			$msg =  array(
 				"msg" => "<div class='alert alert-danger'><strong>Error: </strong>You Must Set A book No First!</div>",
 				"id" => $memberID
 			);
@@ -70,7 +70,7 @@ class Loan
 
 
 		if($wDate == ""  || $withdrawlAmount ==""){
-			$msg =  array( 
+			$msg =  array(
 				"msg" => "<div class='alert alert-danger'><strong>Error: </strong>Date & Withdraw Amount Field Must Not Be Empty!</div>",
 				"id" => $memberID
 			);
@@ -78,7 +78,7 @@ class Loan
 		}
 
 		if ($memberID == "") {
-			$msg =  array( 
+			$msg =  array(
 				"msg" => "<div class='alert alert-danger'><strong>Error: </strong>There are some error.. Contact with the soft owner.(Reduan Masud)!</div>",
 				"id" => $memberID
 			);
@@ -89,7 +89,7 @@ class Loan
 		}
 
 		if($withdrawlAmount > $totalSeavings){
-			$msg =  array( 
+			$msg =  array(
 				"msg" => "<div class='alert alert-danger'><strong>Warning: </strong>You Cannot Withdraw More Than Your Total Saveings!</div>",
 				"id" => $memberID
 			);
@@ -112,7 +112,7 @@ class Loan
 		if($result){
 			header("Location: member_profile.php?id=$memberID");
 			ob_end_flush();
-			$msg =  array( 
+			$msg =  array(
 				"msg" => "<div class='alert alert-success'><strong>Success: </strong>Money Successfully Withdrawed.</div>",
 				"id" => $memberID
 			);
@@ -190,7 +190,7 @@ class Loan
 		$serviceCharge = $data['loan_service_charge'];
 
 		$interestRate = $data['interest_rate'];
-		
+
 		$loanDuration = $data['loan_duration'];
 		$loanType = $data['lone_type'];
 		$loanIssueDate = $data['loan_issue_date'];
@@ -198,20 +198,20 @@ class Loan
 		$memberBookNo = $this->member->getBookNoByMemberId($memberID);
 		$key = md5(time());
 		if($loanAmount == "" || $serviceCharge == "" || $interestRate == "" || $loanDuration == "" || $loanType == "" || $loanIssueDate == ""){
-			$msg =  array( 
+			$msg =  array(
 				"msg" => "<div class='alert alert-danger'><strong>Error: </strong>Field Must Not Be Empty!</div>",
 				"id" => $memberID
 			);
 			return $msg;
 		}
 		if($this->checkLoan($memberID)){
-			$msg =  array( 
+			$msg =  array(
 				"msg" => "<div class='alert alert-danger'><strong>Error: </strong>You already have an active loan!</div>",
 				"id" => $memberID
 			);
 			return $msg;
 		}
-		
+
 		$interestRate_A = $interestRate/100;
 		$serviceCharge_A = $serviceCharge/100;
 
@@ -224,7 +224,7 @@ class Loan
 		$sql = "INSERT INTO loan_table (member_id, jamindar_id, book_id, loan_amount, loan_interest, loan_period, loan_type, loan_serverce_charge, loan_total, service_amount, grand_total, book_cost, loan_date, special_key) VALUES (:memberID, :jamindarID, :bookNo, :loanAmount, :loanIntrest, :loanDuration, :loanType, :serviceCharge, :totalLoan, :loanServiceCharge, :grandTotal, :bookCost, :loanDate, :key)";
 		$query = $this->db->pdo->prepare($sql);
 		$query->bindValue(':memberID', $memberID);
-		$query->bindValue(':jamindarID', "");
+		$query->bindValue(':jamindarID', null);
 		$query->bindValue(':bookNo', $memberBookNo);
 		$query->bindValue(':loanAmount', $loanAmount);
 		$query->bindValue(':loanIntrest', $interestRate);
@@ -294,7 +294,7 @@ class Loan
 		}else{
 			return false;
 		}
-		
+
 	}
 	public function getLoanDataByMemberId($memberID){
 		$sql = "SELECT * FROM loan_table WHERE member_id = :id AND active = 1";
@@ -311,7 +311,7 @@ class Loan
 
 		$is_jamindar = $this->jamindar->checkJamindar($jamindarID);
 		if($is_jamindar){
-			$msg =  array( 
+			$msg =  array(
 				"msg" => "<div class='alert alert-warning'><strong>Warning:# $loanID </strong>There is No Jamindar By This Id</div>",
 				"id" => $memberID
 			);
@@ -338,7 +338,7 @@ class Loan
 
 
 		if($result1 && $result2){
-			$msg =  array( 
+			$msg =  array(
 				"msg" => "<div class='alert alert-success'><strong>Success:# $loanID </strong>Your Loan Successfully Issued.</div>",
 				"id" => $memberID
 			);
@@ -353,7 +353,7 @@ class Loan
 
 
 		if($name == "" or $date == ""){
-			$msg =  array( 
+			$msg =  array(
 				"msg" => "<div class='alert alert-danger'><strong>Error: </strong>Name & Date Must Not Be Empty</div>",
 				"id" => $memberID
 			);
@@ -361,7 +361,7 @@ class Loan
 		}
 
 
-		
+
 		$jamindarID = $this->jamindar->addJamindar($data);
 		//return $jamindarID;
 		$bookNo = $this->member->getBookNoByMemberId($memberID);
@@ -388,7 +388,7 @@ class Loan
 
 
 		if($result1 && $result2){
-			$msg =  array( 
+			$msg =  array(
 				"msg" => "<div class='alert alert-success'><strong>Success:# $loanID </strong>Your Loan Successfully Issued.</div>",
 				"id" => $memberID
 			);
@@ -412,7 +412,7 @@ class Loan
 
 	public function getLastLoan($memberID){
 		$sql = "SELECT * FROM loan_table WHERE member_id = :memberID AND jamindar_id != 0 ORDER BY loan_date DESC LIMIT 1";
-	
+
 		$query = $this->db->pdo->prepare($sql);
 		$query->bindValue(":memberID", $memberID);
 		$query->execute();
@@ -423,7 +423,7 @@ class Loan
 	}
 	public function getLastLoanByActivity($memberID){
 		$sql = "SELECT * FROM loan_table WHERE member_id = :memberID AND active = 1 ORDER BY loan_date DESC LIMIT 1";
-	
+
 		$query = $this->db->pdo->prepare($sql);
 		$query->bindValue(":memberID", $memberID);
 		$query->execute();
@@ -450,7 +450,7 @@ class Loan
 			$totalloaninst = 0;
 		}
 		if(!$this->member->checkBookNo($bookNO)){
-			$msg =  array( 
+			$msg =  array(
 				"msg" => "<div class='alert alert-danger'><strong>Error: </strong>There is No Book.. ($bookNO)</div>",
 				"id" => $memberID,
 				"data" => $data,
@@ -461,7 +461,7 @@ class Loan
 		}
 
 		if(!$loanD && $installment != ""){
-			$msg =  array( 
+			$msg =  array(
 				"msg" => "<div class='alert alert-danger'><strong>Error: </strong>This Person Has No Running Loan</div>",
 				"id" => $memberID,
 				"data" => $data,
@@ -472,16 +472,16 @@ class Loan
 
 
 		if($date == "" || $bookNO ==""){
-			$msg =  array( 
+			$msg =  array(
 				"msg" => "<div class='alert alert-danger'><strong>Error: </strong>Field Must Not Be Empty!</div>",
 				"id" => $memberID,
 				"data" => $data
 			);
 		return $msg;
-		}	
+		}
 
 		if($this->checkAlreadyMoneyAddedToday($date, $loanD->id)){
-			$msg =  array( 
+			$msg =  array(
 				"msg" => "<div class='alert alert-warning'><strong>Warning: </strong>This Person's money already added.</div>",
 				"id" => $memberID,
 				"data" => $data,
@@ -503,7 +503,7 @@ class Loan
 		if($totalloaninst >= $loanD->loan_total){
 			$loanFinished = $this->FinishedLoan($loanD->id, $date);
 			if($loanFinished){
-					$msg =  array( 
+					$msg =  array(
 					"msg" => "<div class='alert alert-success'><strong>Hurra: </strong>".$this->member->getMemberByBookNo2($bookNO)->name ." Your Loan Is Finshed..Today($bookNO)</div>",
 					"id" => $memberID,
 					"data" => $data,
@@ -512,11 +512,11 @@ class Loan
 					"check" => ($totalloaninst >= $loanD->loan_total)
 				);
 			return $msg;
-			
+
 			}
 		}else{
 		if ($result) {
-				$msg =  array( 
+				$msg =  array(
 					"msg" => "<div class='alert alert-success'><strong>Success: </strong>Money Successfully added to ".$this->member->getMemberByBookNo2($bookNO)->name."!</div>",
 					"id" => $memberID,
 					"data" => $data,

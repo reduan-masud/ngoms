@@ -1,6 +1,7 @@
 
-<?php 
-
+<?php
+require_once 'lib/Configuration.php';
+$configuration = new Configuration();
 ob_start();
  ?>
 
@@ -55,7 +56,7 @@ ob_start();
 
     <!-- Bootstrap Select Css -->
     <link href="plugins/bootstrap-select/css/bootstrap-select.css" rel="stylesheet" />
-    
+
     <link href="plugins/sweetalert/sweetalert.css" rel="stylesheet" />
 
     <!-- noUISlider Css -->
@@ -70,6 +71,21 @@ ob_start();
 
     <!-- AdminBSB Themes. You can choose a theme from css/themes instead of get all themes -->
     <link href="css/themes/all-themes.css" rel="stylesheet" />
+
+    <?php
+    $configuration->hideNavBar();
+    echo $configuration->is_navbar_visible();
+    if(!$configuration->is_navbar_visible())
+    {
+
+      echo "<style>";
+      echo ".navbar{display: none;}";
+      echo "</style>";
+
+
+    }
+
+    ?>
 </head>
 
 <body class="theme-blue">
@@ -87,7 +103,7 @@ ob_start();
                     </div>
                 </div>
             </div>
-        
+
             <p>Please wait...</p>
         </div>
     </div>
@@ -336,6 +352,7 @@ ob_start();
                 <div class="info-container">
                     <div class="name" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Reduan Masud</div>
                     <div class="email">redouanmasud@gmail.com</div>
+
                 </div>
             </div>
             <!-- #User Info -->

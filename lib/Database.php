@@ -1,11 +1,11 @@
 
-<?php 
+<?php
 class Database
 {
 	private $dbhost = "localhost";
-	private $dbuser = "for_site_access";
-	private $dbpass = "123456";
-	private $dbname = "db_office";
+	private $dbuser = "root";
+	private $dbpass = "";
+	private $dbname = "db_ngoms";
 
 	public $pdo;
 
