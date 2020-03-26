@@ -1,4 +1,4 @@
-<?php  
+<?php
 
 require_once '../lib/Member.php';
 require_once '../lib/Loan.php';
@@ -12,10 +12,12 @@ $activeLoanMember = $Member->getActiveLoanMember();
 $date = $_GET["date"];
 //Convert the date string into a unix timestamp.
 $unixTimestamp = strtotime($date);
- 
+
 //Get the day of the week using PHP's date function.
 $dayOfWeek = date("l", $unixTimestamp);
- 
+
+
+
 ?>
 <style>
 	*{
@@ -53,19 +55,31 @@ $dayOfWeek = date("l", $unixTimestamp);
 	</tr>
 </thead>
 <tbody>
-<?php 
+<?php
 $i = 0;
+$totalSavings = 0;
+$totalInstallments = 0;
 foreach ($activeLoanMember as $row) {
 	$i++;
+  $totalSavings += $Member->getMemberDailyCollection($row->member_id, $date)->savings;
+  $totalInstallments+= $Member->getMemberDailyCollection($row->member_id, $date)->installments
 ?>
 	<tr>
 		<td align="center"><?php echo $i ?></td>
 		<td><?php echo (string)$Member->getMemberData($row->member_id)->name; ?></td>
 		<td><?php echo (string)$Member->getMemberData($row->member_id)->mobile; ?></td>
-		<td></td>
-		<td></td>
+		<td><?php echo (string)$Member->getMemberDailyCollection($row->member_id, $date)->savings; ?>/-</td>
+		<td><?php echo (string)$Member->getMemberDailyCollection($row->member_id, $date)->installments; ?>/-</td>
 		<td></td>
 	</tr>
 <?php } ?>
 </tbody>
+</tfoot>
+<tr>
+  <td colspan="2"></td>
+  <td align="right"><b>Total: </b></td>
+  <td><b><?=$totalSavings;?>/-</b></td>
+  <td><b><?=$totalInstallments;?>/-</b></td>
+</tr>
+</tfoot>
 </table>

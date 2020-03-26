@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 require_once 'Database.php';
 
@@ -50,7 +50,7 @@ class Jamindar
 			$husbandName = $data["father_name"];
 			$fatherName = null;
 		}
-		
+
 		$motherName = $data["mother_name"];
 		$profession = $data["profession"];
 		$religion = $data["religion"];
@@ -59,7 +59,7 @@ class Jamindar
 		$nationality = $data["nationality"];
 		$nid_type = $data["card_type"];
 		$nidNo = $data["nid_no"];
-		$bookNo = $data["book_no"];
+		//$bookNo = $data["book_no"];
 		$gender = $data["gender"];
 		$admissionDate = $data["admission_date"];
 
@@ -79,14 +79,14 @@ class Jamindar
 		$specialKey = time();
 		$specialKey = md5($specialKey);
 
-		
+
 
 		//return $specialKey;
 
 		$sql = "INSERT INTO `jamindar` (name, father_name, husband_name, mother_name, profession, nid_type, nid, religion, mobile, nationality, marital_status, pre_home, pre_village, pre_post, pre_thana, pre_upazila, pre_zila, per_village, per_post, per_thana, per_upazila, per_zila, reg_date, gender, special_key) VALUES (:name, :fatherName, :husbandName, :motherName, :profession, :nid_type, :nidNo, :religion, :mobileNumber, :nationality, :maritalStutas, :preHouse, :preVillage, :prePostOffice, :preThana, :preSubDistrict, :preDistrict, :perVillage, :perPostOffice, :perThana, :perSubDistrict, :perDistrict, :admissionDate, :gender, :specialKey)";
 
 
-		
+
 		$query = $this->db->pdo->prepare($sql);
 
 		//personal information
@@ -101,8 +101,8 @@ class Jamindar
 		$query->bindValue(':mobileNumber', $mobileNumber);
 		$query->bindValue(':nationality', $nationality);
 		$query->bindValue(':maritalStutas', $maritalStutas);
-		
-		
+
+
 		$query->bindValue(':preHouse', $preHouse);
 		$query->bindValue(':preVillage', $preVillage);
 		$query->bindValue(':prePostOffice', $prePostOffice);
@@ -164,7 +164,7 @@ class Jamindar
 		$preDistrict = $data["pre_district"];
 
 
-		
+
 
 		$sql ="UPDATE jamindar SET
 			name = :name,
@@ -195,7 +195,7 @@ class Jamindar
 
 		";
 
-		
+
 		$query = $this->db->pdo->prepare($sql);
 
 		//personal information
@@ -209,8 +209,8 @@ class Jamindar
 		$query->bindValue(':mobileNumber', $mobileNumber);
 		$query->bindValue(':nationality', $nationality);
 		$query->bindValue(':maritalStutas', $maritalStutas);
-		
-		
+
+
 		$query->bindValue(':preHouse', $preHouse);
 		$query->bindValue(':preVillage', $preVillage);
 		$query->bindValue(':prePostOffice', $prePostOffice);
@@ -231,7 +231,7 @@ class Jamindar
 		$success = $query->execute();
 
 		if($success){
-			$msg =  array( 
+			$msg =  array(
 				"msg" => "<div class='alert alert-success'><strong>Success:# </strong>Data Successfully Updated <a href='member_profile.php?id=$memberID' class='btn btn-info'>Go Back</a></div>",
 			);
 			return $msg;
@@ -274,7 +274,7 @@ class Jamindar
 		if($result){
 			return $result->id;
 		}
-		
+
 	}
 
 

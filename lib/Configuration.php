@@ -5,6 +5,7 @@
 class Configuration
 {
   private $showNavBar = true;
+  private $soft_name = "Reduan Masud Software Ltd.";
 
   function __construct()
   {
@@ -24,10 +25,7 @@ class Configuration
     $this->showNavBar = false;
   }
 
-  public function hello_world()
-  {
-    echo "Hello WOrld";
-  }
+
 }
 
 

@@ -73,7 +73,7 @@ ob_start();
     <link href="css/themes/all-themes.css" rel="stylesheet" />
 
     <?php
-    $configuration->hideNavBar();
+    //$configuration->hideNavBar();
     echo $configuration->is_navbar_visible();
     if(!$configuration->is_navbar_visible())
     {

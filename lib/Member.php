@@ -1,5 +1,5 @@
 
-<?php 
+<?php
 include 'Database.php';
 class Member
 {
@@ -69,7 +69,7 @@ class Member
 			$msg = "<div class='alert alert-warning'><strong>Warning: </strong>This book already registered whith <a href='member_profile.php?id=$member->id'>$member->name</a></div>";
 			return $msg;
 		}
-		
+
 
 		$sql = "INSERT INTO `member_info` (name, father_name, husband_name, mother_name, profession,nid_type, nid, religion, mobile, nationality, marital_status, b_home, b_vill, b_post, b_thana, b_upazila, b_zila, s_vill, s_post, s_thana, s_upazila, s_zila, admission_date, special_key, gender) VALUES (:name, :fatherName, :husbandName, :motherName, :profession, nid_type, :nidNo, :religion, :mobileNumber, :nationality, :maritalStutas, :preHouse, :preVillage, :prePostOffice, :preThana, :preSubDistrict, :preDistrict, :perVillage, :perPostOffice, :perThana, :preSubDistrict, :perDistrict, :admissionDate, :specialKey, :gender)";
 
@@ -88,7 +88,7 @@ class Member
 		$query->bindValue(':nationality', $nationality);
 		$query->bindValue(':maritalStutas', $maritalStutas);
 		$query->bindValue(':gender', $gender);
-		
+
 		$query->bindValue(':preHouse', $preHouse);
 		$query->bindValue(':preVillage', $preVillage);
 		$query->bindValue(':prePostOffice', $prePostOffice);
@@ -172,30 +172,30 @@ class Member
 			$msg = "<div class='alert alert-danger'><strong>Error: </strong>Name, Date & Book No Must Not be Empty</div>";
 			return $msg;
 		}
-		
+
 		$sql = "UPDATE member_info SET
-				name = :name, 
+				name = :name,
 				father_name = :fatherName,
 				husband_name = :husbandName,
-				mother_name = :motherName, 
+				mother_name = :motherName,
 				profession = :profession,
 				nid_type = :nid_type,
-				nid = :nidNo, 
-				religion = :religion, 
-				mobile = :mobileNumber, 
-				nationality = :nationality, 
-				marital_status = :maritalStutas, 
-				b_home = :preHouse, 
-				b_vill = :preVillage, 
-				b_post = :prePostOffice, 
-				b_thana = :preThana, 
-				b_upazila = :preSubDistrict, 
-				b_zila = :preDistrict, 
-				s_vill = :perVillage, 
-				s_post = :perPostOffice, 
-				s_thana = :perThana, 
-				s_upazila = :preSubDistrict, 
-				s_zila = :perDistrict, 
+				nid = :nidNo,
+				religion = :religion,
+				mobile = :mobileNumber,
+				nationality = :nationality,
+				marital_status = :maritalStutas,
+				b_home = :preHouse,
+				b_vill = :preVillage,
+				b_post = :prePostOffice,
+				b_thana = :preThana,
+				b_upazila = :preSubDistrict,
+				b_zila = :preDistrict,
+				s_vill = :perVillage,
+				s_post = :perPostOffice,
+				s_thana = :perThana,
+				s_upazila = :preSubDistrict,
+				s_zila = :perDistrict,
 				gender = :gender,
 				admission_date = :admissionDate
 				WHERE id = :id
@@ -218,7 +218,7 @@ class Member
 		$query->bindValue(':gender', $gender);
 		$query->bindValue(':admissionDate', $admissionDate);
 
-		
+
 		$query->bindValue(':preHouse', $preHouse);
 		$query->bindValue(':preVillage', $preVillage);
 		$query->bindValue(':prePostOffice', $prePostOffice);
@@ -294,7 +294,7 @@ class Member
 		if($result){
 			return $result;
 		}
-		
+
 	}
 
 
@@ -352,7 +352,24 @@ class Member
 		return $member;
 	}
 
+//Get member  Saveings and installment dayil
+	public function getMemberDailyCollection($id, $date)
+	{
+		$sql = "SELECT * FROM daily_withdraw WHERE member_id = :id AND withdrawal_date = :date";
+		$query = $this->db->pdo->prepare($sql);
+		$query->bindValue(':id', $id);
+		$query->bindValue(':date', $date);
+		$query->execute();
 
+		$result = $query->fetch(PDO::FETCH_OBJ);
+
+		if(!$result){
+			header("Location: 404.php");
+			ob_end_flush();
+		}
+
+		return $result;
+	}
 
 
 	public function getBookNoByMemberId($id){
@@ -397,5 +414,3 @@ class Member
 	}
 
 }
-
-
