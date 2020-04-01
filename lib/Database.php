@@ -5,7 +5,7 @@ class Database
 	private $dbhost = "localhost";
 	private $dbuser = "root";
 	private $dbpass = "";
-	private $dbname = "db_ngoms";
+	private $dbname = "db_ngoms2";
 
 	public $pdo;
 

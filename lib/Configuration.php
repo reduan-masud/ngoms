@@ -4,7 +4,7 @@
  */
 class Configuration
 {
-  private $showNavBar = true;
+  private $showNavBar = false;
   private $soft_name = "Reduan Masud Software Ltd.";
 
   function __construct()

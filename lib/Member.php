@@ -4,11 +4,67 @@ include 'Database.php';
 class Member
 {
 	private $db;
+	private $loanCount;
+	private $Name;
+	private $BookNo;
+	private $totalLoan;
+	private $BookId;
+
 	public function __construct()
 	{
 		$this->db = new Database();
 	}
 
+	public function init($id)
+	{
+		$this->getCountedLoan($id);
+		$this->getBookNo($id);
+	}
+
+
+
+	// getBook
+	private function getBookNo($member_id)
+	{
+		$sql = "SELECT * FROM book where member_id = :member_id";
+		$query = $this->db->pdo->prepare($sql);
+		$query->bindValue(':member_id', $member_id);
+		$query->execute();
+		$result = $query->fetch(PDO::FETCH_OBJ);
+		if($result)
+		{
+			$this->BookNo = $result->book_no;
+			$this->BookId = $result->id;
+		}
+	}
+
+
+	public function ShowBookNo()
+	{
+		return $this->BookNo;
+	}
+	//
+	private function getCountedLoan($member_id)
+	{
+		$sql = "SELECT COUNT('id') as cid FROM loan_table WHERE member_id = :member_id";
+		$query = $this->db->pdo->prepare($sql);
+		$query -> bindValue(':member_id', $member_id);
+		$query->execute();
+		$count = 0;
+
+		$result = $query->fetch(PDO::FETCH_OBJ);
+		if($result)
+		{
+			$count = $result->cid;
+		}
+		$this->loanCount = $count;
+	}
+
+	//show Loan Count;
+	public function showLoanCount()
+	{
+		return $this->loanCount;
+	}
 	//Member Registration
 	public function memberRegistration($data)
 	{
@@ -399,6 +455,24 @@ class Member
 		if ($result) {
 			header("Location: member_list.php");
 		}
+	}
+
+	//Count loan
+	public function countLoan($id)
+	{
+		$sql = "SELECT COUNT('id') as cid FROM loan_table WHERE member_id = :id";
+		$query = $this->db->pdo->prepare($sql);
+		$query -> bindValue(':id', $id);
+		$query->execute();
+		$count = 0;
+		$result = $query->fetch(PDO::FETCH_OBJ);
+		if($result)
+		{
+			$count = $result->cid;
+		}
+		return $count;
+
+
 	}
 
 	//get all loan active member

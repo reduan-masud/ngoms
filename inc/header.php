@@ -86,6 +86,9 @@ ob_start();
     }
 
     ?>
+    <style>
+    i{display: none;}
+    </style>
 </head>
 
 <body class="theme-blue">
@@ -364,6 +367,12 @@ ob_start();
                         <a href="index.php">
                             <i class="material-icons">home</i>
                             <span>Dashboard</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="SoftwareConfiguration.php">
+                            <i class="material-icons">wc</i>
+                            <span>Configur Software</span>
                         </a>
                     </li>
                     <li>
