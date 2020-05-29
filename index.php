@@ -1,7 +1,7 @@
-<?php 
+<?php
     include "inc/header.php";
-    require_once 'lib/Member.php';
-    require_once 'lib/Loan.php';
+    include_once 'lib/Member.php';
+    include_once 'lib/Loan.php';
     $member = new Member();
     $loan = new Loan();
     $totalMember = $member->getTotalMemberNo();
@@ -77,7 +77,7 @@
                 </div>
             </div>
             <!-- #END# Widgets -->
-           
+
             <!-- BAR CHART -->
             <div class="row clearfix">
                 <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">

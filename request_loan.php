@@ -8,7 +8,7 @@ require_once 'lib/Jamindar.php';
 <section class="content">
       <div class="container-fluid">
             <div class="block-header">
-                  <h2>BLANK PAGE</h2>
+                  <h2>Request For Loan Page</h2>
             </div>
             <?php
             $loan = new Loan();
@@ -45,7 +45,7 @@ require_once 'lib/Jamindar.php';
             echo "<pre>";
             echo $loanJamindar['msg'];
             echo "</pre>";
-            $showLoanInfoForm = ture;
+            $showLoanInfoForm = TRUE;
             }
 
             if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['add_jamindar_by_id']) && !isset($_POST['add_jamindar'])) {
@@ -67,10 +67,10 @@ require_once 'lib/Jamindar.php';
                        $loanSpecialKey = $loanReq;
                   }
 
-
+                  if(isset($loanSpecialKey)){
                   $LoanData = $loan->gelLoanDatyByKey($loanSpecialKey);
                   $loanID = $LoanData->id;
-
+                  }
             echo "</pre>";
             }
 
@@ -85,6 +85,7 @@ require_once 'lib/Jamindar.php';
 
             <!-- Loan Information Form-->
             <div class="row clearfix">
+              <!--Section 1 Start-->
                   <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                         <div class="card">
                               <div class="header">
@@ -104,6 +105,14 @@ require_once 'lib/Jamindar.php';
                                           </li>
                                     </ul>
                               </div>
+                              <?php
+
+                              $loan->totalDepositByMember($_GET['id']);
+                              echo $loan->totalDeposit;
+                              ?>
+
+
+
                               <form action="" method="post">
                                     <div class="body">
                                           <div class="demo-masked-input">
@@ -183,8 +192,13 @@ require_once 'lib/Jamindar.php';
                                           </div>
                                     </div>
                               </form>
+
+
+
+
                         </div>
                   </div>
+                  <!--Section 1 END-->
             </div>
             <!-- #END# Loan Information Form-->
 
@@ -248,6 +262,7 @@ require_once 'lib/Jamindar.php';
                   </div>
             </div>
             <!-- #END# Loan Data Check-->
+
             <!--Checkmark For Previous Jamindar-->
             <div class="row clearfix">
                   <div class="col-lg-12 col-md-12">

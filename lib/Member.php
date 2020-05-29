@@ -1,6 +1,6 @@
 
 <?php
-include 'Database.php';
+require_once 'Database.php';
 class Member
 {
 	private $db;
@@ -9,6 +9,10 @@ class Member
 	private $BookNo;
 	private $totalLoan;
 	private $BookId;
+
+
+
+	public $totalDiposits;
 
 	public function __construct()
 	{

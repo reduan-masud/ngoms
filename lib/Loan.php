@@ -3,18 +3,23 @@
 require_once 'Database.php';
 require_once 'Member.php';
 require_once 'Jamindar.php';
+require_once 'Deposit.php';
 class Loan
 {
 	private $db;
 	private $member;
 	private $jmmindar_id;
+	private $totalDepositByBookNo;
+	private $last_active_loan;
+
+
+
 	public function __construct()
 	{
 		$this->db = new Database();
 		$this->member = new Member();
 		$this->jamindar = new Jamindar();
 	}
-
 
 	//get monthly report total saveings and installment
 	public function monthly_report($data)
@@ -47,6 +52,8 @@ class Loan
 		}
 
 	}
+
+
 	//Withdras Savings
 	public function withdras_savings($data)
 	{
@@ -221,7 +228,7 @@ class Loan
 
 		$grandTotal = $totalLoan + $loanServiceCharge + $bookCost;
 
-		$sql = "INSERT INTO loan_table (member_id, jamindar_id, book_id, loan_amount, loan_interest, loan_period, loan_type, loan_serverce_charge, loan_total, service_amount, grand_total, book_cost, loan_date, special_key) VALUES (:memberID, :jamindarID, :bookNo, :loanAmount, :loanIntrest, :loanDuration, :loanType, :serviceCharge, :totalLoan, :loanServiceCharge, :grandTotal, :bookCost, :loanDate, :key)";
+		$sql = "INSERT INTO loan_table (member_id, jamindar_id, book_no, loan_amount, loan_interest, loan_period, loan_type, loan_serverce_charge, loan_total, service_amount, grand_total, book_cost, loan_date, special_key) VALUES (:memberID, :jamindarID, :bookNo, :loanAmount, :loanIntrest, :loanDuration, :loanType, :serviceCharge, :totalLoan, :loanServiceCharge, :grandTotal, :bookCost, :loanDate, :key)";
 		$query = $this->db->pdo->prepare($sql);
 		$query->bindValue(':memberID', $memberID);
 		$query->bindValue(':jamindarID', null);
@@ -268,6 +275,22 @@ class Loan
 			return false;
 		}
 	}
+
+
+	private function is_active_loan($book_no){
+		$sql = "SELECT * FROM loan_table WHERE book_no = :book_no AND active = 1";
+		$query = $this->db->pdo->prepare($sql);
+		$query->bindValue(':book_no', $book_no);
+		$query->execute();
+		$row = $query->fetchAll();
+		if($row){
+			$this->last_active_loan = $row;
+			return true;
+		}else{
+			return false;
+		}
+	}
+
 
 	public function loanTableJamindar($memberID){
 		/*
@@ -435,23 +458,131 @@ class Loan
 		}
 	}
 
+
+
+
+	//If deposit added today
+	private function check_deposit_added_today($date, $book_no)
+	{
+		$sql = "SELECT * FROM deposit WHERE book_no = :book_no AND deposit_date = :deposit_date";
+		$query = $this->db->pdo->prepare($sql);
+		$query->bindValue(":book_no", $book_no);
+		$query->bindValue(":deposit_date", $date);
+		$query->execute();
+		$result = $query->fetch(PDO::FETCH_OBJ);
+		if($result)
+		{
+			return true;
+		}
+		else
+		{
+			return false;
+		}
+
+	}
+
+	//If Installment added Today
+	private function check_installment_added_today($date, $loan_id)
+	{
+		$sql = "SELECT * FROM installments WHERE loan_id = :loan_id AND installment_date = :installment_date";
+		$query = $this->db->pdo->prepare($sql);
+		$query->bindValue(":loan_id", $loan_id);
+		$query->bindValue(":installment_date", $date);
+		$query->execute();
+		$result = $query->fetch(PDO::FETCH_OBJ);
+		if ($result) {
+			return true;
+		} else {
+			return false;
+		}
+
+	}
+
+	//Get total installment of a loan
+	private function total_installment_loan_id($loan_id)
+	{
+		$sql = "SELECT SUM(installment_amount) as total_installment FROM installments WHERE loan_id = :loan_id";
+		$query = $this->db->pdo->prepare($sql);
+		$query->bindValue(":loan_id", $loan_id);
+		$query->execute();
+		$result = $query->fetch(PDO::FETCH_OBJ);
+		if($result)
+		{
+			return $result->total_installment;
+		}
+		else
+		{
+			return 0;
+		}
+	}
+
+ //Get total installment by datefmt_create
+ private function total_installment_date($date)
+ {
+	 $sql = "SELECT SUM(installment_amount) as total_installment FROM installments WHERE installment_date = :installment_date";
+	 $query = $thsi->db->pdo->prepare($sql);
+	 $query->bindValue(":installment_date", $date);
+	 $query->execute();
+	 $result = $query->fetch(PDO::FETCH_OBJ);
+	 if($result){
+		 return $result->total_installment;
+	 }else {
+	 	return 0;
+	 }
+
+ }
+
+//Add installment
+private function addInstallment($loan_id, $installment_amount, $date)
+{
+	$sql = "INSERT INTO installments (
+					loan_id,
+					installment_amount,
+					installment_date
+				)VALUES(
+					:loan_id,
+					:installment_amount,
+					:installment_date
+				)";
+
+	 $query = $this->db->pdo->prepare($sql);
+	 $query->bindValue(":loan_id", $laon_id);
+	 $query->bindValue(":installment_amount", $installment_amount);
+	 $query->bindValue(":installment_date", $date);
+
+	 $result = $query->execute();
+	 if($result){
+		 return true;
+	 }else{
+		 return false;
+	 }
+}
+
+
 	//Daily Money Wthtdraw Section Start
 
 	public function addMoney($data){
 
 		$date = $data['date'];
-		$bookNO = $data['bookNo'];
-		$saveings = $data['Saveings'];
+		$book_no = $data['bookNo'];
+		$deposit = $data['Saveings'];
 		$installment = $data['Installment'];
+		$loan_id = $this->last_active_loan->id;
+
+
 		$memberID = $this->member->getMemberByBookNo2($bookNO)->id;
 		$loanD = $this->getLastLoanByActivity($memberID);
-		$totalloaninst = $this->totalInstallment($loanD->id);
-		if($totalloaninst == null){
-			$totalloaninst = 0;
-		}
-		if(!$this->member->checkBookNo($bookNO)){
+
+		//check loan available
+		$is_active_loan = $this->is_active_loan($book_no);
+		$totalloaninst = 0;
+
+
+
+
+		if(!$this->member->checkBookNo($book_no)){
 			$msg =  array(
-				"msg" => "<div class='alert alert-danger'><strong>Error: </strong>There is No Book.. ($bookNO)</div>",
+				"msg" => "<div class='alert alert-danger'><strong>Error: </strong>There is No Book.. ($book_no)</div>",
 				"id" => $memberID,
 				"data" => $data,
 				"loan" =>$loanD,
@@ -459,28 +590,8 @@ class Loan
 			);
 			return $msg;
 		}
-
-		if(!$loanD && $installment != ""){
-			$msg =  array(
-				"msg" => "<div class='alert alert-danger'><strong>Error: </strong>This Person Has No Running Loan</div>",
-				"id" => $memberID,
-				"data" => $data,
-				"loan" =>$loanD
-			);
-			return $msg;
-		}
-
-
-		if($date == "" || $bookNO ==""){
-			$msg =  array(
-				"msg" => "<div class='alert alert-danger'><strong>Error: </strong>Field Must Not Be Empty!</div>",
-				"id" => $memberID,
-				"data" => $data
-			);
-		return $msg;
-		}
-
-		if($this->checkAlreadyMoneyAddedToday($date, $loanD->id)){
+		if(check_deposit_added_today($date, $book_no) && check_installment_added_today($date, $loan_id))
+		{
 			$msg =  array(
 				"msg" => "<div class='alert alert-warning'><strong>Warning: </strong>This Person's money already added.</div>",
 				"id" => $memberID,
@@ -489,47 +600,100 @@ class Loan
 			);
 		return $msg;
 		}
+		if(check_deposit_added_today($date, $book_no) && $deposit != "")
+		{
+			$msg =  array(
+				"msg" => "<div class='alert alert-warning'><strong>Warning: </strong>You can not add deposit twice at same day ($book_no). You can add installment only.</div>",
+				"id" => $memberID,
+				"data" => $data,
+				"loan" =>$loanD,
+				"TotalMoney" => $totalloaninst
+			);
+			return $msg;
+		}
+		if(check_installment_added_today($date, $loan_id) && $installment != "")
+		{
+			$msg =  array(
+				"msg" => "<div class='alert alert-warning'><strong>Warning: </strong>You can not add Installment twice at same day ($book_no). You can add deposit only.</div>",
+				"id" => $memberID,
+				"data" => $data,
+				"loan" =>$loanD,
+				"TotalMoney" => $totalloaninst
+			);
+			return $msg;
+		}
 
-		$sql = "INSERT INTO daily_withdraw (member_id, book_id, loan_id, savings, installments, withdrawal_date) VALUES (:memberID, :bookNO, :loanID, :saveings, :installment, :wdate)";
-		$query = $this->db->pdo->prepare($sql);
-		$query->bindValue(':memberID', $memberID);
-		$query->bindValue(':bookNO', $bookNO);
-		$query->bindValue(':loanID', $loanD->id);
-		$query->bindValue(':saveings', $saveings);
-		$query->bindValue(':installment', $installment);
-		$query->bindValue(':wdate', $date);
-		$result = $query->execute();
+		if($is_active_loan)
+		{
+			$total_installment = $this->total_installment_loan_id($loan_id);
 
-		if($totalloaninst >= $loanD->loan_total){
-			$loanFinished = $this->FinishedLoan($loanD->id, $date);
-			if($loanFinished){
+		}
+		if(!$is_active_loan){
+			$msg =  array(
+				"msg" => "<div class='alert alert-danger'><strong>Error: </strong>This Person Has No Running Loan</div>",
+				"id" => $memberID,
+				"data" => $data,
+				"loan" =>$loanD
+			);
+			return $msg;
+		}
+		if($date == "" || $bookNO ==""){
+			$msg =  array(
+				"msg" => "<div class='alert alert-danger'><strong>Error: </strong>[Date] or [Book No]Field Must Not Be Empty!</div>",
+				"id" => $memberID,
+				"data" => $data
+			);
+		return $msg;
+		}
+		if($deposit == "" && $installment ==""){
+			$msg =  array(
+				"msg" => "<div class='alert alert-danger'><strong>Error: </strong>Both [Deposit] [Installment] Field Must Not Be Empty!</div>",
+				"id" => $memberID,
+				"data" => $data
+			);
+		return $msg;
+		}
+		if(!check_deposit_added_today($date)){
+			$addDiposit = $this->addDeposits($book_no, $member_id, $deposit, $date);
+		}
+
+		if (!check_installment_added_today($date)) {
+			$addInstallment = $this->addInstallment($loan_id, $installment ,$date);
+		}
+
+		if($addDiposit || $addInstallment){
+			if($totalloaninst >= $this->last_active_loan->loan_total){
+				$loanFinished = $this->FinishedLoan($this->last_active_loan->id, $date);
+				if($loanFinished){
+						$msg =  array(
+						"msg" => "<div class='alert alert-success'><strong>Hurra: </strong>".$this->member->getMemberByBookNo2($bookNO)->name ." Your Loan Is Finshed..Today($bookNO)</div>",
+						"id" => $memberID,
+						"data" => $data,
+						"loan" => $loanD,
+						"TotalMoney" => $totalloaninst,
+						"check" => ($totalloaninst >= $loanD->loan_total)
+					);
+				return $msg;
+
+				}
+			}else{
 					$msg =  array(
-					"msg" => "<div class='alert alert-success'><strong>Hurra: </strong>".$this->member->getMemberByBookNo2($bookNO)->name ." Your Loan Is Finshed..Today($bookNO)</div>",
-					"id" => $memberID,
-					"data" => $data,
-					"loan" => $loanD,
-					"TotalMoney" => $totalloaninst,
-					"check" => ($totalloaninst >= $loanD->loan_total)
-				);
-			return $msg;
-
-			}
-		}else{
-		if ($result) {
-				$msg =  array(
-					"msg" => "<div class='alert alert-success'><strong>Success: </strong>Money Successfully added to ".$this->member->getMemberByBookNo2($bookNO)->name."!</div>",
-					"id" => $memberID,
-					"data" => $data,
-					"loan" => $loanD,
-					"TotalMoney" => $totalloaninst,
-					"check" => ($totalloaninst >= $loanD->loan_total)
-				);
-			return $msg;
+						"msg" => "<div class='alert alert-success'><strong>Success: </strong>Money Successfully added to ".$this->member->getMemberByBookNo2($bookNO)->name."!</div>",
+						"id" => $memberID,
+						"data" => $data,
+						"loan" => $loanD,
+						"TotalMoney" => $totalloaninst,
+						"check" => ($totalloaninst >= $loanD->loan_total)
+					);
+				return $msg;
 			}
 		}
 
 
-	}
+
+
+
+	}//add money finished
 
 	private function FinishedLoan($loanID, $date){
 		$sql = "UPDATE loan_table SET
