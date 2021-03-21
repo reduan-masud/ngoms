@@ -1,5 +1,5 @@
 
-<?php 
+<?php
       include 'inc/header.php';
       include 'lib/Member.php';
       require_once 'lib/Loan.php';
@@ -10,7 +10,7 @@
             <div class="block-header">
                 <h2>User Profile</h2>
             </div>
-            <?php  
+            <?php
                   $member = new Member();
                   $loan = new Loan();
                   $jamindar = new Jamindar();
@@ -21,14 +21,22 @@
                         $memberData = $member->getMemberData($_GET['id']);
                         $bookNo = $member->getBookNoByMemberId($_GET['id']);
                         $loanData = $loan->getLast5LoanInfo($_GET['id']);
-                        $lastLoanData = $loan->getLastLoan($_GET['id']);
-                        $jamindarData = $jamindar->getJamindarByJamindarID($lastLoanData['jamindar_id'], $row = null);
+                        $lastLoanData = null;
+                        $jamindarData = null;
+                        $lastLoanID = null;
+                         if($loan->getLastLoan($_GET['id']) !== null){
+                             $lastLoanData = $loan->getLastLoan($_GET['id']);
+                             $jamindarData = $jamindar->getJamindarByJamindarID($lastLoanData['jamindar_id']);
+                             $lastLoanID = $lastLoanData['id'];
+                             if (isset($lastLoanID)) {
+                                 $totalINstallment = $loan->totalInstallmentCurrentLoan($lastLoanID);
+                             }
+
+                         }
+
                         $totalSeavings = $loan->getTotalSaveings($_GET['id']);
-                        $lastLoanID = $lastLoanData['id'];
-                        if (isset($lastLoanID)) {
-                            $totalINstallment = $loan->totalInstallmentCurrentLoan($lastLoanID);
-                        }
-                        
+
+
                   }
             ?>
             <!-- Widgets -->
@@ -52,7 +60,7 @@
                         <div class="content">
                             <div class="text">Total Installment</div>
                             <div class="number count-to" data-from="0" data-to="257" data-speed="1000" data-fresh-interval="20"><?php echo  $totalINstallment;  ?><?php if ($lastLoanData['active']== 0): ?>
-                               <span class="text-danger" > Finished!</span> 
+                               <span class="text-danger" > Finished!</span>
                             <?php endif ?></div>
                         </div>
                     </div>
@@ -81,7 +89,7 @@
                         		</div>
 
                         	</div>
-                          
+
                         </div>
                     </div>
                 </div>
@@ -104,7 +112,7 @@
 	                        		<h2><?=$memberData->name?></h2>
 		                            <p><strong>Present Address:</strong></p>
 			            			<p>House: <?=$memberData->b_home?>, <?=$memberData->b_vill?>, <?=$memberData->b_post?>, <?=$memberData->b_thana?>, <?=$memberData->b_upazila?>, <?=$memberData->b_zila?>.</p>
-			            			<p><strong>Mobile:</strong> <?=$memberData->mobile?></p>	
+			            			<p><strong>Mobile:</strong> <?=$memberData->mobile?></p>
                         		</div>
                         		<div class="col-md-4">
                         			<div class="pull-right" style="background-color: red; width: 150px; height: 200px;"></div>
@@ -166,7 +174,7 @@
                         					<td width="25%" ><b>:</b> <?=$memberData->admission_date?></td>
                                                       <td width="25%"><strong>Nationality</strong></td>
                                                       <td width="25%"><b>:</b> <?=$memberData->nationality?></td>
-                        					
+
                         				</tr>
                         				<tr>
                         					<td width="25%"><strong>Parmanent Address</strong></td>
@@ -174,7 +182,7 @@
                         				</tr>
                         			</table>
                         		</div>
-								
+
 								<div class="col-md-12 bg-indigo" style="padding:10px 3px;"><strong>LAST 5 LOAN</strong> <span class="pull-right" style="margin-right: 10px;"><strong>Total Loan:</strong> 5</span></div>
 								<div class="col-md-12">
 									<table class="table table-striped">
@@ -193,7 +201,7 @@
                                         $i = 0;
                                         foreach ($loanData as $loanRow) {
                                         $i++;
-                                        
+
                                         ?>
 
 										<tr>
@@ -207,7 +215,7 @@
                                                 <?php echo ($loanRow['active'] == 1)? "<span class='label label-success'>Running</span>":"<span class='label label-danger'>Finished</span>"; ?>
                                             </td>
 										</tr>
-                                    
+
                                         <?php }} ?>
 									</table>
 								</div>
@@ -240,13 +248,13 @@
                                                 Husband's Name</strong></td>
                                                 <td width="25%"><b>:</b> <?=$jamindarData->husband_name?></td>
                                             <?php endif ?>
-                                            
-                        					
+
+
                         				</tr>
                         				<tr>
                         					<td width="25%"><strong>Mother's Name</strong></td>
                         					<td width="25%"><b>:</b> <?=$jamindarData->mother_name?></td>
-                        					
+
                         				</tr>
                         				<tr>
                         					<td width="25%"><strong>Home District</strong></td>
@@ -275,7 +283,7 @@
                         					<td width="25%"><b>:</b> <?=$jamindarData->reg_date?></td>
                                             <td width="25%"><strong>Gender</strong></td>
                                             <td width="25%"><b>:</b> <?=$jamindarData->gender?></td>
-                        					
+
                         				</tr>
                         				<tr>
                         					<td width="25%"><strong>Parmanent Address</strong></td>
@@ -292,13 +300,13 @@
 
 
                         	</div>
-                          
+
                         </div>
                     </div>
                 </div>
 
             </div>
-        
+
         </div>
     </section>
 <?php include 'inc/js.php'; ?>
