@@ -182,7 +182,7 @@
                         				</tr>
                         			</table>
                         		</div>
-
+                                <?php if($lastLoanData) { ?>
 								<div class="col-md-12 bg-indigo" style="padding:10px 3px;"><strong>LAST 5 LOAN</strong> <span class="pull-right" style="margin-right: 10px;"><strong>Total Loan:</strong> 5</span></div>
 								<div class="col-md-12">
 									<table class="table table-striped">
@@ -296,7 +296,7 @@
                         			</table>
                         		</div>
 
-
+                            <?php } ?>
 
 
                         	</div>
