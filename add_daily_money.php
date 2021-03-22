@@ -1,5 +1,5 @@
 
-<?php 
+<?php
       include 'inc/header.php';
       include 'lib/Member.php';
       require_once 'lib/Loan.php';
@@ -12,7 +12,7 @@
             </div>
 
 
-            <?php 
+            <?php
             $loan = new Loan();
             $showForm = true;
             if(isset($_GET['date'])){
@@ -34,7 +34,7 @@
                         <div class="body">
                             <div class="row">
                                 <div class="col-md-6 col-md-offset-3">
-                                
+
                                 <form action="" metohd="get">
                                     <b>Name</b>
                                     <div class="input-group">
@@ -50,7 +50,7 @@
 
                                 </div>
                             </div>
-                          
+
                         </div>
                     </div>
                 </div>
@@ -110,13 +110,17 @@
                                 </div>
                                 <div class="col-md-7">
                                     <table border = "1" width="100%">
-                                      <?php 
+                                      <?php
                                       $getDate;
                                       if(isset($_GET['date'])){
                                         $getDate = $_GET['date'];
                                       }
                                       $getDatas = $loan->getDailyAddMoneyByDate($getDate);
+
                                       ?>
+                                      <pre>
+                                      <?php //var_dump($getDatas); ?>
+                                      </pre>
                                       <tbody>
                                       <?php
                                       $i = 0;
@@ -158,13 +162,13 @@
 
 
                         	</div>
-                          
+
                         </div>
                     </div>
                 </div>
             </div>
             <?php endif ?>
-        
+
 
 
 
@@ -177,7 +181,7 @@
         console.log("Document IS Ready");
         $("#bookNo").focus();
       });
-         
+
     </script>
     <script src="js/admin.js"></script>
     <script src="js/pages/index.js"></script>
