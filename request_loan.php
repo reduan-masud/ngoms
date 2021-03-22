@@ -12,9 +12,9 @@ require_once 'lib/Jamindar.php';
             </div>
             <?php
             $loan = new Loan();
-            $loanSpecialKey;
-            $LoanData;
-            $loanID;
+            $loanSpecialKey=null;
+            $LoanData = null;
+            $loanID = null;
             $previousJamindar;
             $showLoanInfoForm = true;
             $jamindar = new Jamindar();
@@ -30,8 +30,8 @@ require_once 'lib/Jamindar.php';
             $member = $memberc->getMemberData($_GET['id']);
             }
             if($loan->loanTableJamindar($_GET['id'])){
-            $showLoanInfoForm = false;
-            $LoanData = $loan->getLoanDataByMemberId($_GET['id']);
+                $showLoanInfoForm = false;
+                $LoanData = $loan->getLoanDataByMemberId($_GET['id']);
             }
             $previousJamindar = $jamindar->getLastJamindarIDbyMember($_GET['id']);
 
@@ -40,12 +40,12 @@ require_once 'lib/Jamindar.php';
             }
 
             if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['add_jamindar']) && !isset($_POST['add_jamindar_by_id'])) {
-            $loanJamindar  = $loan->loanSetWithJamindar($_GET['id'], $_POST);
-            
-            echo "<pre>";
-            echo $loanJamindar['msg'];
-            echo "</pre>";
-            $showLoanInfoForm = ture;
+                $loanJamindar  = $loan->loanSetWithJamindar($_GET['id'], $_POST);
+
+                echo "<pre>";
+                echo $loanJamindar['msg'];
+                echo "</pre>";
+                $showLoanInfoForm = true;
             }
 
             if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['add_jamindar_by_id']) && !isset($_POST['add_jamindar'])) {
@@ -64,11 +64,11 @@ require_once 'lib/Jamindar.php';
                         echo $loanReq['msg'];
                         $showLoanInfoForm = true;
                   }else{
-                       $loanSpecialKey = $loanReq; 
+                       $loanSpecialKey = $loanReq;
                   }
-                  
-                  $LoanData = $loan->gelLoanDatyByKey($loanSpecialKey);
-                  $loanID = $loanData->id;
+
+                  //$LoanData = $loan->gelLoanDatyByKey($loanSpecialKey);
+                  //$loanID = $loanData->id;
             echo "</pre>";
             }
 
@@ -156,7 +156,7 @@ require_once 'lib/Jamindar.php';
                                                                   <span class="input-group-addon">
                                                                         <i class="material-icons">airline_seat_legroom_extra</i>
                                                                   </span>
-                                                                  
+
                                                                   <select class="form-control show-tick" name="lone_type">
                                                                         <option value="Daily">Daily</option>
                                                                         <option value="Weekly">Weekly</option>
@@ -188,7 +188,7 @@ require_once 'lib/Jamindar.php';
 
             <?php endif ?>
             <?php if (!$showLoanInfoForm): ?>
-            
+
             <!-- Loan Data Check -->
             <div class="row clearfix">
                   <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
@@ -275,7 +275,7 @@ require_once 'lib/Jamindar.php';
                         </div>
                   </div>
             </div>
-            
+
             <form action="" method="post"  id="showOnChecked">
             <div class="row clearfix">
                   <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
@@ -299,7 +299,7 @@ require_once 'lib/Jamindar.php';
                                                 <div class="col-md-6">
                                                       <button type="Submit" name="add_jamindar_by_id" class="btn btn-block btn-lg btn-success waves-effect" value="Submit">Submit</button>
                                                 </div>
-                                                
+
                                           </div>
                                     </div>
                               </div>
@@ -395,7 +395,7 @@ require_once 'lib/Jamindar.php';
                                                                   <span class="input-group-addon">
                                                                         <i class="material-icons">airline_seat_legroom_extra</i>
                                                                   </span>
-                                                                  
+
                                                                   <select class="form-control show-tick" name="religion">
                                                                         <option value="Islam">Islam</option>
                                                                         <option value="Hindu">Hindu</option>
@@ -498,7 +498,7 @@ require_once 'lib/Jamindar.php';
                               </div>
                         </div>
                   </div>
-                  <!-- #END# Jamindar Information --> 
+                  <!-- #END# Jamindar Information -->
                   <!-- Parmanent Address-->
                   <div class="row clearfix">
                         <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
@@ -678,7 +678,7 @@ require_once 'lib/Jamindar.php';
                                                       <div class="col-md-12">
                                                             <button type="Submit" name="add_jamindar" class="btn btn-block btn-lg btn-success waves-effect" value="Submit">Submit</button>
                                                       </div>
-                                                      
+
                                                 </div>
                                           </div>
                                     </div>
