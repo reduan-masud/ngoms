@@ -1,5 +1,5 @@
 
-<?php 
+<?php
       include 'inc/header.php';
       include 'lib/Member.php';
       require_once 'lib/Loan.php';
@@ -85,7 +85,7 @@
                                             </select>
                                         </div>
                                     </div>
-                                    
+
                                    <br>
                                     <button class="btn bg-red btn-block btn-lg waves-effect" onclick="gopage2()" >Get the Daily Witdrew page</button>
                                     <script>
@@ -97,19 +97,20 @@
                                                 window.open(url, "MsgWindow", "width=1200px,height=650px")
                                             }
                                        }
-                                    </script>                        	
+                                    </script>
                         		</div>
 
 
                         		<div class="col-md-3">
-                        			<a href="request_loan.php?id=<?=$memberData->id?>" class="btn bg-purple btn-block btn-lg waves-effect">Request Ror Loan</a>
+                                    <!--<a href="request_loan.php?id=  php echo $memberData->id; ?>" class="btn bg-purple btn-block btn-lg waves-effect">Request Ror Loan</a>-->
+                        			<a href="request_loan.php?id=" class="btn bg-purple btn-block btn-lg waves-effect">Request Ror Loan</a>
                         		</div>
                         		<div class="col-md-3">
                         			<a href="" class="btn bg-indigo btn-block btn-lg waves-effect">Print</a>
                         		</div>
 
                         	</div>
-                          
+
                         </div>
                     </div>
                 </div>
@@ -117,14 +118,14 @@
             </div>
 
 
-            
 
 
 
 
 
-			
-        
+
+
+
         </div>
     </section>
 <?php include 'inc/js.php'; ?>
