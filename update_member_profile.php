@@ -1,5 +1,5 @@
-<?php 
-    include 'inc/header.php'; 
+<?php
+    include 'inc/header.php';
     include 'lib/Member.php';
 
 ?>
@@ -7,7 +7,7 @@
         <div class="container-fluid">
             <div class="block-header">
                 <h2>Update Member Information</h2>
-                <?php  
+                <?php
                     $memberc = new Member();
                     if(!isset($_GET['id'])){
                         header("Location: 404.php");
@@ -21,7 +21,7 @@
 
                     }
 
-                    
+
                     if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['update_member'])) {
                         $profileUpdate  = $memberc->memberProfileUpdate($_GET['id'], $_POST);
                     }
@@ -66,8 +66,8 @@
                                     </div>
                                     <div class="col-md-3">
                                         <b>
-                                            <input name="fh" value="father_ok" style=" margin: 0px; display: inline-block; position: relative; opacity: 1; left: auto;" type="radio" <?echo ($member->father_name != null)? "checked":"";?>> Father
-                                            <input name="fh" value="husband_ok" style=" margin: 0px; display: inline-block; position: relative; opacity: 1; left: auto;" type="radio" <?echo ($member->father_name == null)? "checked":"";?>> Husband
+                                            <input name="fh" value="father_ok" style=" margin: 0px; display: inline-block; position: relative; opacity: 1; left: auto;" type="radio" <?php echo ($member->father_name != null)? "checked" : "";?>> Father
+                                            <input name="fh" value="husband_ok" style=" margin: 0px; display: inline-block; position: relative; opacity: 1; left: auto;" type="radio" <?php echo ($member->father_name == null)? "checked":"";?>> Husband
                                         </b>
                                         <div class="input-group">
                                             <span class="input-group-addon">
@@ -106,7 +106,7 @@
                                             <span class="input-group-addon">
                                                 <i class="material-icons">airline_seat_legroom_extra</i>
                                             </span>
-                                        
+
 		                                    <select class="form-control show-tick" name="religion" value="<?=$member->religion?>">
 		                                        <option <?php echo ($member->religion == "Islam")? "selected":"" ?> value="Islam">Islam</option>
 		                                        <option <?php echo ($member->religion == "Hindu")? "selected":"" ?> value="Hindu">Hindu</option>
@@ -177,7 +177,7 @@
                                                     <option value="Birth Cirtificate"<?php echo ($member->nid_type  == "Birth Cirtificate")? "selected":"" ?>>Birth Cirtificate</option>
                                                     <option value="Passport"<?php echo ($member->nid_type == "Passport")? "selected":"" ?>>Passport </option>
                                                 </select>
-                                                
+
                                             </div>
                                         </div>
                                         <div class="col-md-6">
@@ -289,7 +289,7 @@
                                                 <input type="text" class="form-control" value="<?=$member->s_zila?>" name="per_district" placeholder="Your District">
                                             </div>
                                         </div>
-                                    </div> 
+                                    </div>
 
                                 </div>
                             </div>
@@ -393,7 +393,7 @@
                                     <div class="col-md-12">
                                     	<button type="Submit" name="update_member" class="btn btn-block btn-lg btn-success waves-effect" value="Submit">Submit</button>
                                     </div>
-                                    
+
                                 </div>
                             </div>
                         </div>

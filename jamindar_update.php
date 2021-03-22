@@ -1,5 +1,5 @@
-<?php 
-    include 'inc/header.php'; 
+<?php
+    include 'inc/header.php';
     include 'lib/Member.php';
     require_once 'lib/Jamindar.php';
 
@@ -8,7 +8,7 @@
         <div class="container-fluid">
             <div class="block-header">
                 <h2>Update Jamindar Information</h2>
-                <?php  
+                <?php
                     $jamindar = new Jamindar();
                     if(!isset($_GET['id'])){
                         header("Location: 404.php");
@@ -22,10 +22,10 @@
 
                     }
 
-                    
+
                     if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['update_jamindar'])) {
                         $profileUpdate  = $jamindar->updateJamindarInfo($_GET['id'], $_POST, $_GET['memId']);
-                
+
                         echo $profileUpdate['msg'];
 
                     }
@@ -72,8 +72,8 @@
                                                       </div>
                                                       <div class="col-md-3">
                                                             <b>
-                                                              <input name="fh" value="father_ok" style=" margin: 0px; display: inline-block; position: relative; opacity: 1; left: auto;" type="radio" <?echo ($jamindarData->father_name != null)? "checked":"";?>> Father
-                                                              <input name="fh" value="husband_ok" style=" margin: 0px; display: inline-block; position: relative; opacity: 1; left: auto;" type="radio" <?echo ($jamindarData->father_name == null)? "checked":"";?>> Husband
+                                                              <input name="fh" value="father_ok" style=" margin: 0px; display: inline-block; position: relative; opacity: 1; left: auto;" type="radio" <?php echo ($jamindarData->father_name != null)? "checked":"";?>> Father
+                                                              <input name="fh" value="husband_ok" style=" margin: 0px; display: inline-block; position: relative; opacity: 1; left: auto;" type="radio" <?php echo ($jamindarData->father_name == null)? "checked":"";?>> Husband
                                                           </b>
                                                             <div class="input-group">
                                                                   <span class="input-group-addon">
@@ -112,7 +112,7 @@
                                                                   <span class="input-group-addon">
                                                                         <i class="material-icons">airline_seat_legroom_extra</i>
                                                                   </span>
-                                                                  
+
                                                                   <select class="form-control show-tick" name="religion">
                                                                         <option <?php echo ($jamindarData->religion == "Islam")? "selected":"" ?> value="Islam">Islam</option>
                                                                         <option <?php echo ($jamindarData->religion == "Hindu")? "selected":"" ?> value="Hindu">Hindu</option>
@@ -170,7 +170,7 @@
                                                             </div>
                                                       </div>
 
-                                                      
+
                                                       <div class="col-md-3">
                                                             <b>National Id No</b>
                                                             <div class="input-group">
@@ -381,7 +381,7 @@
                                                       <div class="col-md-12">
                                                             <button type="Submit" name="update_jamindar" class="btn btn-block btn-lg btn-success waves-effect" value="Submit">Update</button>
                                                       </div>
-                                                      
+
                                                 </div>
                                           </div>
                                     </div>
