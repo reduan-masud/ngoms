@@ -1,7 +1,7 @@
 
 <?php
 class Database
-{
+{ 
 	private $dbhost = "localhost";
 	private $dbuser = "root";
 	private $dbpass = "";
