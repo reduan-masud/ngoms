@@ -361,12 +361,12 @@ ob_start();
                             <span>Add New Member</span>
                         </a>
                     </li>
-                    <li>
+                    <!-- <li>
                         <a href="find_member.php">
                             <i class="material-icons">search</i>
                             <span>Find Member</span>
                         </a>
-                    </li>
+                    </li> -->
                     <li>
                         <a href="add_daily_money.php">
                             <i class="material-icons">account_balance_wallet</i>
