@@ -1,5 +1,5 @@
 
-<?php 
+<?php
 
 ob_start();
  ?>
@@ -55,7 +55,7 @@ ob_start();
 
     <!-- Bootstrap Select Css -->
     <link href="plugins/bootstrap-select/css/bootstrap-select.css" rel="stylesheet" />
-    
+
     <link href="plugins/sweetalert/sweetalert.css" rel="stylesheet" />
 
     <!-- noUISlider Css -->
@@ -87,7 +87,7 @@ ob_start();
                     </div>
                 </div>
             </div>
-        
+
             <p>Please wait...</p>
         </div>
     </div>
@@ -114,7 +114,7 @@ ob_start();
             <div class="navbar-header">
                 <a href="javascript:void(0);" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar-collapse" aria-expanded="false"></a>
                 <a href="javascript:void(0);" class="bars"></a>
-                <a class="navbar-brand" href="index.html">NGOMS-(SKBSS)</a>
+                <a class="navbar-brand" href="index.php">NGOMS-(SKBSS)</a>
             </div>
             <div class="collapse navbar-collapse" id="navbar-collapse">
                 <ul class="nav navbar-nav navbar-right">
