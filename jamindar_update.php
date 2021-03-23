@@ -2,7 +2,7 @@
     include 'inc/header.php';
     include 'lib/Member.php';
     require_once 'lib/Jamindar.php';
-
+ 
 ?>
     <section class="content">
         <div class="container-fluid">

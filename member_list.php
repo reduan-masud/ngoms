@@ -1,9 +1,9 @@
-<?php 
-    include 'inc/header.php'; 
+<?php
+    include 'inc/header.php';
     include 'lib/Member.php';
 ?>
 
-
+ 
     <section class="content">
         <div class="container-fluid">
             <div class="block-header">
@@ -62,7 +62,7 @@
                                     </tfoot>
                                     <tbody>
 
-                                        <?php 
+                                        <?php
                                         $i = 0;
                                         foreach ($rows as $row) {
                                         $i++;

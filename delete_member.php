@@ -1,9 +1,9 @@
-<?php 
-    include 'inc/header.php'; 
+<?php
+    include 'inc/header.php';
     include 'lib/Member.php';
-
+ 
 ?>
-    <?php 
+    <?php
 
     $member = new Member();
     if(isset($_GET['id'])){

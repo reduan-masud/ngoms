@@ -12,7 +12,7 @@
                     if(!isset($_GET['id'])){
                         header("Location: 404.php");
                         ob_end_flush();
-                    }
+                    } 
                     if(!$memberc->getMemberData($_GET['id'])){
                         header("Location: 404.php");
                         ob_end_flush();

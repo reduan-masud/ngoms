@@ -1,5 +1,5 @@
-
-<?php 
+ 
+<?php
       include 'inc/header.php';
       require_once 'lib/Member.php';
       require_once 'lib/Loan.php';
@@ -12,7 +12,7 @@
             </div>
 
 
-            <?php 
+            <?php
             $loan = new Loan();
             $member = new Member();
             $showForm = true;
@@ -36,7 +36,7 @@
                         <div class="body">
                             <div class="row">
                                 <div class="col-md-6 col-md-offset-3">
-                                
+
                                 <form action="" metohd="get">
                                     <b>Member Book</b>
                                     <div class="input-group">
@@ -52,7 +52,7 @@
 
                                 </div>
                             </div>
-                          
+
                         </div>
                     </div>
                 </div>
@@ -117,13 +117,13 @@
 
 
                         	</div>
-                          
+
                         </div>
                     </div>
                 </div>
             </div>
             <?php endif ?>
-        
+
 
 
 
