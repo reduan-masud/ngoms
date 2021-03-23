@@ -1,4 +1,4 @@
-<?php 
+<?php
     include "inc/header.php";
     require_once 'lib/Member.php';
     require_once 'lib/Loan.php';
@@ -9,7 +9,7 @@
     $totalInstallment = $loan->getTotalInstallment();
     $totalGivenMoney = $loan->getTotalGivenMoneyActive();
     $totalSaveings = $loan->getTotalSaveingsWithourID();
-
+ 
 ?>
 
     <section class="content">
@@ -77,7 +77,7 @@
                 </div>
             </div>
             <!-- #END# Widgets -->
-           
+
             <!-- BAR CHART -->
             <div class="row clearfix">
                 <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
