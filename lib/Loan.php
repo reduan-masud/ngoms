@@ -499,7 +499,9 @@ class Loan
 		$query->bindValue(':installment', $installment);
 		$query->bindValue(':wdate', $date);
 		$result = $query->execute();
+
         $totalloaninst = $this->totalInstallment($loanD->id);
+
 		if($totalloaninst >= $loanD->loan_total){
 			$loanFinished = $this->FinishedLoan($loanD->id, $date);
 			if($loanFinished){
